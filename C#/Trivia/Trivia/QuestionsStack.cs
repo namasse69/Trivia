@@ -4,22 +4,14 @@ using System.Linq;
 
 namespace Trivia
 {
-    internal class QuestionsStack
+    public class QuestionsStack
     {
-        private LinkedList<string> _questions = new LinkedList<string>();
+        private readonly LinkedList<string> _questions = new LinkedList<string>();
 
-        public QuestionsStack(string category)
+        public QuestionsStack(string category, Func<string, LinkedList<string>> getQuestions)
         {
             Category = category;
-            GenerateQuestions();
-        }
-
-        public void GenerateQuestions()
-        {
-            for (var i = 0; i < 50; i++)
-            {
-                _questions.AddLast(Category + " Question " + i);
-            }
+            _questions = getQuestions(Category);
         }
 
         public string Category { get; private set; }
