@@ -4,7 +4,7 @@ namespace Trivia
 {
     public class Player
     {
-        private readonly IDisplay _display;
+        private readonly IDispatchEvent _display;
         public string Name { get; private set; }
 
         public int Place { get; private set; }
@@ -13,7 +13,7 @@ namespace Trivia
 
         public bool InPenaltyBox { get; set; }
 
-        public Player(string name, IDisplay display)
+        public Player(string name, IDispatchEvent display)
         {
             Name = name;
             _display = display;

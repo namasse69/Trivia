@@ -7,9 +7,9 @@ namespace Trivia
     public class Players
     {
         private readonly List<Player> _players = new List<Player>();
-        private IDisplay _display;
+        private IDispatchEvent _display;
 
-        public Players(IDisplay display)
+        public Players(IDispatchEvent display)
         {
             _display = display;
         }

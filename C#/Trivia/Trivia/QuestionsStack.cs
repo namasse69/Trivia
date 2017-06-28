@@ -8,9 +8,9 @@ namespace Trivia
     {
         private LinkedList<string> _questions = new LinkedList<string>();
         private IQuestionsRepository _questionsRepository;
-        private IDisplay _display;
+        private IDispatchEvent _display;
 
-        public QuestionsStack(string category, IQuestionsRepository questionsRepository, IDisplay display)
+        public QuestionsStack(string category, IQuestionsRepository questionsRepository, IDispatchEvent display)
         {
             Category = category;
             _questionsRepository = questionsRepository;

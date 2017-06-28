@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Trivia
 {
-    public interface IDisplay
+    public interface IDispatchEvent
     {
         void Display(String texte);
 
+        void Dispatch<TEvent>(TEvent playerRolledDice);
     }
 }

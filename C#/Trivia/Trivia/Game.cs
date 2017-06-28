@@ -11,20 +11,21 @@ namespace Trivia
         private readonly Questions _questions;
         
         bool isGettingOutOfPenaltyBox;
-        private IDisplay _display;
+        private readonly IDispatchEvent _eventDispatcher;
 
 
-        public Game(Players players, Questions questions, IDisplay display)
+        public Game(Players players, Questions questions, IDispatchEvent eventDispatcher)
         {
             _players = players;
             _questions = questions;
-            _display = display;
+            _eventDispatcher = eventDispatcher;
         }
 
         public void Roll(int roll)
         {
-            _display.Display(_players.Current.Name + " is the current player");
-            _display.Display("They have rolled a " + roll);
+            _eventDispatcher.Dispatch(new PlayerRolledDice(_players.Current.Name, roll));
+            _eventDispatcher.Display(_players.Current.Name + " is the current player");
+            _eventDispatcher.Display("They have rolled a " + roll);
 
             if (_players.Current.InPenaltyBox)
             {
@@ -32,17 +33,17 @@ namespace Trivia
                 {
                     isGettingOutOfPenaltyBox = true;
 
-                    _display.Display(_players.Current.Name + " is getting out of the penalty box");
+                    _eventDispatcher.Display(_players.Current.Name + " is getting out of the penalty box");
                     _players.Current.Move(roll);
 
-                    _display.Display(_players.Current.Name
+                    _eventDispatcher.Display(_players.Current.Name
                             + "'s new location is "
                             + _players.Current.Place);
                     _questions.AskQuestion(_players.Current.Place);
                 }
                 else
                 {
-                    _display.Display(_players.Current.Name + " is not getting out of the penalty box");
+                    _eventDispatcher.Display(_players.Current.Name + " is not getting out of the penalty box");
                     isGettingOutOfPenaltyBox = false;
                 }
 
@@ -51,7 +52,7 @@ namespace Trivia
             {
                 _players.Current.Move(roll);
 
-                _display.Display(_players.Current.Name
+                _eventDispatcher.Display(_players.Current.Name
                         + "'s new location is "
                         + _players.Current.Place);
                 _questions.AskQuestion(_players.Current.Place);
@@ -66,7 +67,7 @@ namespace Trivia
             {
                 if (isGettingOutOfPenaltyBox)
                 {
-                    _display.Display("Answer was correct!!!!");
+                    _eventDispatcher.Display("Answer was correct!!!!");
                     _players.Current.WinAGoldCoin();
 
                     winner = _players.Current.IsWinner();
@@ -79,7 +80,7 @@ namespace Trivia
                 return false;
             }
 
-            _display.Display("Answer was corrent!!!!");
+            _eventDispatcher.Display("Answer was corrent!!!!");
             _players.Current.WinAGoldCoin();
 
             winner = _players.Current.IsWinner();
@@ -90,8 +91,8 @@ namespace Trivia
 
         public bool WrongAnswer()
         {
-            _display.Display("Question was incorrectly answered");
-            _display.Display(_players.Current.Name + " was sent to the penalty box");
+            _eventDispatcher.Display("Question was incorrectly answered");
+            _eventDispatcher.Display(_players.Current.Name + " was sent to the penalty box");
             _players.Current.GoToPenaltyBox();
 
             _players.NextPlayer();

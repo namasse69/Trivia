@@ -6,11 +6,20 @@ using System.Threading.Tasks;
 
 namespace Trivia
 {
-    public class ConsoleDisplay : IDisplay
+    public class ConsoleDisplay : IDispatchEvent
     {
-        void IDisplay.Display(String texte)
+        void IDispatchEvent.Display(String texte)
         {
             Console.WriteLine(texte);
+        }
+
+        public void Dispatch<TEvent>(TEvent @event)
+        {
+            if (@event.GetType() == typeof(PlayerRolledDice))
+            {
+                Console.WriteLine(@event. + " is the current player");
+                Console.WriteLine("They have rolled a " + @event.);
+            }
         }
     }
 }
